@@ -101,7 +101,7 @@ void MainWindow::on_sonButton_clicked()
     QString son = QFileDialog::getOpenFileName(this, tr("Ouvrir un fichier son"), "",
                                                tr("Son (*.ogg *.wav)"));
 
-    ui->imageEdit->setText(son);
+    ui->sonEdit->setText(son);
 }
 
 void MainWindow::on_action_Save_triggered()
