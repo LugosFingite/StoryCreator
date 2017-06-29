@@ -28,7 +28,7 @@ struct Node
 {
         NodeInfo info;
         QPointF pos;
-        std::map<QString, QString> actions;
+        std::map<QString, EdgeInfo> actions;
 };
 
 using Graph = std::map<QString, Node>;

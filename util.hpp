@@ -25,6 +25,7 @@
 #include <QRectF>
 #include <QLineF>
 #include <QString>
+#include <QColor>
 
 #include <cmath>
 
@@ -59,10 +60,23 @@ inline bool rectEdge(const QRectF& rect, const QLineF& line, QPointF& intersecti
 
 struct NodeInfo
 {
-    QString page;
-    QString image;
-    QString son;
-    QString desc;
+        QString page;
+        QString image;
+        QString son;
+        QString desc;
+        QColor color = Qt::white;
+        bool loopMusic = false;
+};
+
+struct EdgeInfo
+{
+        EdgeInfo() = default;
+        EdgeInfo(const QString& iDesc, const QColor& iColor)
+            : desc(iDesc), color(iColor)
+        {}
+
+        QString desc;
+        QColor color = Qt::white;
 };
 
 #endif // UTIL_HPP

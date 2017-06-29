@@ -354,7 +354,7 @@ Graph GraphView::buildGraph() const
 
     for (const auto& edge : m_edges)
     {
-        graph[edge->from()].actions[edge->to()] = edge->desc;
+        graph[edge->from()].actions[edge->to()] = edge->info;
     }
 
     return graph;
@@ -364,7 +364,7 @@ void GraphView::loadFromGraph(const Graph &graph)
 {
     removeAll();
 
-    std::multimap<QString, std::pair<QString, QString>> edges;
+    std::multimap<QString, std::pair<QString, EdgeInfo>> edges;
 
     for (const auto& pair : graph)
     {
@@ -384,7 +384,7 @@ void GraphView::loadFromGraph(const Graph &graph)
     {
         addEdge(edge.first, edge.second.first);
         auto edgePtr = findEdge(edge.first, edge.second.first);
-        edgePtr->desc = edge.second.second;
+        edgePtr->info = edge.second.second;
     }
 }
 

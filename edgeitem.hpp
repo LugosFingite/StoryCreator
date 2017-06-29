@@ -21,6 +21,7 @@
 #include <QGraphicsItem>
 
 #include "nodeitem.hpp"
+#include "util.hpp"
 
 class EdgeItem : public QGraphicsItem
 {
@@ -59,7 +60,8 @@ class EdgeItem : public QGraphicsItem
     public:
         size_t arrowSize = 10;
         double thickness = 4;
-        QString desc;
+
+        EdgeInfo info;
 
     private:
         NodeItem& m_from;

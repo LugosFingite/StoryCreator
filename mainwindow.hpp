@@ -51,6 +51,9 @@ class MainWindow : public QMainWindow
         void on_link2Button_clicked();
         void on_deleteEdgeButton_clicked();
 
+        void on_textColorButton_clicked();
+        void on_edgeColorButton_clicked();
+
         void on_imageButton_clicked();
         void on_sonButton_clicked();
 
@@ -63,6 +66,9 @@ class MainWindow : public QMainWindow
         void handleNodeInfoChange();
         void updateNodeInfo(NodeInfo);
         void updateEdgeInfo();
+
+        void setTextColor(const QColor& color);
+        void setEdgeColor(const QColor& color);
 
     private:
         void setNodePage();

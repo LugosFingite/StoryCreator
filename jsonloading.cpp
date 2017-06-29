@@ -43,6 +43,8 @@ void save(const Graph &graph, const QString &directory)
         json["image"] = info.image;
         json["son"] = info.son;
         json["desc"] = info.desc;
+        json["color"] = info.color.name();
+        json["loop_music"] = info.loopMusic;
 
         json["editor_pos_x"] = pair.second.pos.x();
         json["editor_pos_y"] = pair.second.pos.y();
@@ -70,7 +72,8 @@ void save(const Graph &graph, const QString &directory)
         {
             QJsonObject action;
             action["cible"] = actionpair.first;
-            action["desc"] = actionpair.second;
+            action["desc"] = actionpair.second.desc;
+            action["color"] = actionpair.second.color.name();
 
             actions.push_back(action);
         }
@@ -128,13 +131,16 @@ Node loadNode(const QString &filename)
         node.info.image = json["image"].toString("");
         node.info.son = json["son"].toString("");
         node.info.desc = json["desc"].toString("");
+        node.info.color = json["color"].toString("white");
+        node.info.loopMusic = json["loop_music"].toBool(false);
         node.pos.rx() = json["editor_pos_x"].toDouble(0);
         node.pos.ry() = json["editor_pos_y"].toDouble(0);
 
         QJsonArray actions = json["actions"].toArray();
         for (const auto& action : actions)
         {
-            node.actions[action.toObject()["cible"].toString()] = action.toObject()["desc"].toString();
+            node.actions[action.toObject()["cible"].toString()] = {action.toObject()["desc"].toString(),
+                                                                   QColor(action.toObject()["color"].toString())};
         }
     }
     catch (const QJsonParseError& err)

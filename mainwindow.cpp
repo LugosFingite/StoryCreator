@@ -19,7 +19,9 @@
 #include "ui_mainwindow.h"
 
 #include <QFileDialog>
+#include <QColorDialog>
 #include <QMessageBox>
+#include <QPalette>
 
 #include "jsonloading.hpp"
 
@@ -36,6 +38,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->imageEdit, &QLineEdit::textChanged, this, &MainWindow::handleNodeInfoChange);
     connect(ui->sonEdit, &QLineEdit::textChanged, this, &MainWindow::handleNodeInfoChange);
     connect(ui->descEdit, &QTextEdit::textChanged, this, &MainWindow::handleNodeInfoChange);
+    connect(ui->textColorButton, &QPushButton::clicked, this, &MainWindow::handleNodeInfoChange);
+    connect(ui->musicLoopCheck, &QCheckBox::clicked, this, &MainWindow::handleNodeInfoChange);
 
     connect(this, &MainWindow::nodeInfoChanged, this, &MainWindow::updateNodeInfo);
 
@@ -88,6 +92,26 @@ void MainWindow::on_deleteEdgeButton_clicked()
     handleNodeFocus();
 }
 
+void MainWindow::on_textColorButton_clicked()
+{
+    QColor color = QColorDialog::getColor(Qt::white, this, tr("Choisir la couleur du texte"));
+
+    if (color.isValid())
+    {
+        setTextColor(color);
+    }
+}
+
+void MainWindow::on_edgeColorButton_clicked()
+{
+    QColor color = QColorDialog::getColor(Qt::white, this, tr("Choisir la couleur du texte"));
+
+    if (color.isValid())
+    {
+        setEdgeColor(color);
+    }
+}
+
 void MainWindow::on_imageButton_clicked()
 {
     QString image = QFileDialog::getOpenFileName(this, tr("Ouvrir un fichier image"), "",
@@ -132,7 +156,7 @@ void MainWindow::on_action_Open_triggered()
     try
     {
         QString dir = QFileDialog::getExistingDirectory(this, tr("Sélectionner un dossier à ouvrir"), "",
-                                                        QFileDialog::ShowDirsOnly);
+                                                        QFileDialog::ShowDirsOnly | QFileDialog::ReadOnly);
 
         if (!dir.isEmpty())
         {
@@ -195,6 +219,7 @@ void MainWindow::handleNodeInfoChange()
     info.image = ui->imageEdit->text();
     info.son = ui->sonEdit->text();
     info.desc = ui->descEdit->toPlainText();
+    info.loopMusic = ui->musicLoopCheck->isChecked();
 
     emit nodeInfoChanged(info);
 }
@@ -214,8 +239,26 @@ void MainWindow::updateEdgeInfo()
     if (!ui->graphView->selectedEdges().empty())
     {
         auto& edge = *ui->graphView->selectedEdges()[0];
-        edge.desc = ui->edgeDescEdit->toPlainText();
+        edge.info.desc = ui->edgeDescEdit->toPlainText();
     }
+}
+
+void MainWindow::setTextColor(const QColor &color)
+{
+    QPixmap pixmap(1, 1);
+    pixmap.fill(color);
+    ui->textColorPixmap->setPixmap(pixmap);
+
+    ui->graphView->selectedNodes()[0]->info.color = color;
+}
+
+void MainWindow::setEdgeColor(const QColor &color)
+{
+    QPixmap pixmap(1, 1);
+    pixmap.fill(color);
+    ui->edgeColorPixmap->setPixmap(pixmap);
+
+    ui->graphView->selectedEdges()[0]->info.color = color;
 }
 
 void MainWindow::updateEdgePage()
@@ -223,7 +266,9 @@ void MainWindow::updateEdgePage()
     auto& edge = *ui->graphView->selectedEdges()[0];
     ui->srcEdgeLabel->setText(edge.from());
     ui->destEdgeLabel->setText(edge.to());
-    ui->edgeDescEdit->setText(edge.desc);
+    ui->edgeDescEdit->setText(edge.info.desc);
+
+    setEdgeColor(edge.info.color);
 }
 
 void MainWindow::setNodePage()
@@ -248,6 +293,7 @@ void MainWindow::updateNodePage()
     ui->imageEdit->setText(nodeInfo.image);
     ui->sonEdit->setText(nodeInfo.son);
     ui->descEdit->setText(nodeInfo.desc);
+    ui->musicLoopCheck->setChecked(nodeInfo.loopMusic);
 
     if (ui->graphView->selectedNodes().size() == 2)
     {
@@ -278,6 +324,8 @@ void MainWindow::updateNodePage()
         ui->link1Button->hide();
         ui->link2Button->hide();
     }
+
+    setTextColor(nodeInfo.color);
 }
 
 void MainWindow::changeEvent(QEvent *e)

@@ -3,5 +3,6 @@
         <file>document-new.png</file>
         <file>document-open.png</file>
         <file>document-save.png</file>
+        <file>white.png</file>
     </qresource>
 </RCC>
