@@ -19,6 +19,7 @@
 
 #include <QRegExp>
 #include <QWheelEvent>
+#include <QApplication>
 #include <QTimeLine>
 
 GraphView::GraphView(QWidget *parent)
@@ -29,6 +30,8 @@ GraphView::GraphView(QWidget *parent)
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate); // prevent artifacts
 
     connect(&m_scene, &QGraphicsScene::selectionChanged, this, &GraphView::handleNewSelection);
+
+    QApplication::setOverrideCursor(Qt::ArrowCursor);
 }
 
 GraphView::~GraphView()

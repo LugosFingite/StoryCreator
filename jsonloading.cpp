@@ -53,6 +53,7 @@ void save(const Graph &graph, const QString &directory)
             QFileInfo imageInfo(info.image);
             dir.mkdir("Graphismes");
             QFile::copy(info.image, "Graphismes/" + imageInfo.fileName());
+            json["image"] = "Graphismes/" + imageInfo.fileName();
         }
 
         if (!info.son.isEmpty())
@@ -60,6 +61,7 @@ void save(const Graph &graph, const QString &directory)
             QFileInfo sonInfo(info.son);
             dir.mkdir("Musique");
             QFile::copy(info.son, "Musique/" + sonInfo.fileName());
+            json["son"] = "Musique/" + sonInfo.fileName();
         }
 
 
