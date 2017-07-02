@@ -1,0 +1,2 @@
+# StoryCreator
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/60854397a48d4c28a65d2451d4c4b5b7)](https://www.codacy.com/app/stellaris62/StoryCreator?utm_source=github.com&utm_medium=referral&utm_content=LugosFingite/StoryCreator&utm_campaign=badger)
