@@ -219,6 +219,7 @@ void MainWindow::handleNodeInfoChange()
     info.image = ui->imageEdit->text();
     info.son = ui->sonEdit->text();
     info.desc = ui->descEdit->toPlainText();
+    info.color = ui->textColorPixmap->pixmap()->toImage().pixel(0, 0);
     info.loopMusic = ui->musicLoopCheck->isChecked();
 
     emit nodeInfoChanged(info);
